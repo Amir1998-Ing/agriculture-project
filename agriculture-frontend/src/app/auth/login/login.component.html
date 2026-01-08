@@ -1,0 +1,195 @@
+<div class="login-container">
+  <div class="row justify-content-center align-items-center w-100 m-0">
+    <div class="col-12 col-sm-10 col-md-8 col-lg-6 col-xl-5">
+      <!-- Carte de connexion -->
+      <div class="card shadow-lg border-0">
+        <!-- En-tête -->
+        <div class="card-header bg-primary text-white text-center py-4">
+          <div class="logo-container mb-3">
+            <i class="fas fa-tractor fa-3x"></i>
+          </div>
+          <h3 class="mb-2">Connexion à votre compte</h3>
+          <p class="mb-0 opacity-75">Accédez à votre espace personnel</p>
+        </div>
+
+        <!-- Corps -->
+        <div class="card-body p-4 p-md-4">
+          <!-- Information de test (en développement) -->
+          <div *ngIf="!environment?.production" class="alert alert-info mb-4">
+            <div class="d-flex">
+              <i class="fas fa-info-circle me-2 mt-1"></i>
+              <div>
+                <strong>Informations de test :</strong><br>
+                Utilisateur: <code>wael</code> | Mot de passe: <code>wael123</code>
+              </div>
+            </div>
+          </div>
+
+          <!-- Formulaire -->
+          <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" novalidate>
+            <!-- Nom d'utilisateur ou Email -->
+            <div class="mb-4">
+              <label for="username" class="form-label fw-semibold">
+                <i class="fas fa-user me-2"></i>
+                Nom d'utilisateur ou Email *
+              </label>
+              <div class="input-group">
+                <span class="input-group-text">
+                  <i class="fas fa-at text-muted"></i>
+                </span>
+                <input
+                  type="text"
+                  id="username"
+                  class="form-control"
+                  formControlName="username"
+                  placeholder="Entrez votre nom d'utilisateur ou email"
+                  [class.is-invalid]="username?.invalid && username?.touched"
+                  [class.is-valid]="username?.valid && username?.touched"
+                >
+              </div>
+              <div class="invalid-feedback d-block" *ngIf="username?.invalid && username?.touched">
+                <div *ngIf="username?.errors?.['required']">
+                  Le nom d'utilisateur ou email est requis
+                </div>
+                <div *ngIf="username?.errors?.['minlength']">
+                  Minimum 3 caractères
+                </div>
+              </div>
+            </div>
+
+            <!-- Mot de passe -->
+            <div class="mb-4">
+              <label for="password" class="form-label fw-semibold">
+                <i class="fas fa-lock me-2"></i>
+                Mot de passe *
+              </label>
+              <div class="input-group">
+                <span class="input-group-text">
+                  <i class="fas fa-key text-muted"></i>
+                </span>
+                <input
+                  [type]="hidePassword ? 'password' : 'text'"
+                  id="password"
+                  class="form-control"
+                  formControlName="password"
+                  placeholder="Entrez votre mot de passe"
+                  [class.is-invalid]="password?.invalid && password?.touched"
+                  [class.is-valid]="password?.valid && password?.touched"
+                >
+                <button 
+                  class="btn btn-outline-secondary" 
+                  type="button"
+                  (click)="togglePasswordVisibility()"
+                  tabindex="-1"
+                >
+                  <i class="fas" [class.fa-eye]="hidePassword" [class.fa-eye-slash]="!hidePassword"></i>
+                </button>
+              </div>
+              <div class="invalid-feedback d-block" *ngIf="password?.invalid && password?.touched">
+                <div *ngIf="password?.errors?.['required']">
+                  Le mot de passe est requis
+                </div>
+                <div *ngIf="password?.errors?.['minlength']">
+                  Minimum 6 caractères
+                </div>
+              </div>
+            </div>
+
+            <!-- Options -->
+            <div class="row mb-4">
+              <div class="col-md-6 mb-3 mb-md-0">
+                <div class="form-check">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    id="rememberMe"
+                    formControlName="rememberMe"
+                  >
+                  <label class="form-check-label" for="rememberMe">
+                    <i class="fas fa-remember me-1"></i>
+                    Se souvenir de moi
+                  </label>
+                </div>
+              </div>
+              <div class="col-md-6 text-md-end">
+                <a routerLink="/auth/forgot-password" class="text-decoration-none text-primary">
+                  <i class="fas fa-key me-1"></i>
+                  Mot de passe oublié ?
+                </a>
+              </div>
+            </div>
+
+            <!-- Message d'erreur -->
+            <div class="alert alert-danger mb-4" *ngIf="error" role="alert">
+              <div class="d-flex align-items-center">
+                <i class="fas fa-exclamation-triangle me-2"></i>
+                <span>{{ error }}</span>
+              </div>
+            </div>
+
+            <!-- Bouton de connexion -->
+            <div class="mb-4">
+              <button
+                type="submit"
+                class="btn btn-primary btn-lg w-100"
+                [disabled]="loginForm.invalid || loading"
+              >
+                <span *ngIf="!loading">
+                  <i class="fas fa-sign-in-alt me-2"></i>
+                  Se connecter
+                </span>
+                <span *ngIf="loading">
+                  <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                  Connexion en cours...
+                </span>
+              </button>
+            </div>
+
+            <!-- Séparateur -->
+            <div class="position-relative my-4">
+              <hr>
+              <div class="position-absolute top-50 start-50 translate-middle bg-white px-3">
+                <span class="text-muted">ou</span>
+              </div>
+            </div>
+
+            <!-- Lien d'inscription -->
+            <div class="text-center">
+              <p class="mb-3">
+                Vous n'avez pas encore de compte ?
+              </p>
+              <a routerLink="/auth/register" class="btn btn-outline-success">
+                <i class="fas fa-user-plus me-2"></i>
+                Créer un nouveau compte
+              </a>
+            </div>
+          </form>
+        </div>
+
+        <!-- Pied de page -->
+        <div class="card-footer text-center py-3 bg-light">
+          <div class="row">
+            <div class="col-md-4 mb-2 mb-md-0">
+              <small class="text-muted">
+                <i class="fas fa-shield-alt me-1"></i>
+                Sécurisé
+              </small>
+            </div>
+            <div class="col-md-4 mb-2 mb-md-0">
+              <small class="text-muted">
+                <i class="fas fa-bolt me-1"></i>
+                Rapide
+              </small>
+            </div>
+            <div class="col-md-4">
+              <small class="text-muted">
+                <i class="fas fa-globe me-1"></i>
+                Disponible
+              </small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

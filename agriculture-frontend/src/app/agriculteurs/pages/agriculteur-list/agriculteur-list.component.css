@@ -1,0 +1,47 @@
+.table th {
+  font-weight: 600;
+  background-color: #f8f9fa;
+  border-top: none;
+}
+
+.table td {
+  vertical-align: middle;
+}
+
+.btn-group .btn {
+  padding: 0.25rem 0.5rem;
+}
+
+.card {
+  border: none;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.card.bg-primary,
+.card.bg-success,
+.card.bg-warning,
+.card.bg-info {
+  border: none;
+  transition: transform 0.2s;
+}
+
+.card.bg-primary:hover,
+.card.bg-success:hover,
+.card.bg-warning:hover,
+.card.bg-info:hover {
+  transform: translateY(-2px);
+}
+
+.pagination .page-item.active .page-link {
+  background-color: #2e7d32;
+  border-color: #2e7d32;
+}
+
+.pagination .page-link {
+  color: #2e7d32;
+}
+
+.pagination .page-link:hover {
+  background-color: #e9ecef;
+  color: #1b5e20;
+}

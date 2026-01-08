@@ -1,0 +1,173 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+  <div class="container-fluid">
+    <!-- Logo et nom de l'application -->
+    <a class="navbar-brand d-flex align-items-center" routerLink="/dashboard">
+      <div class="me-2">
+        <i class="fas fa-tractor text-primary fs-4"></i>
+      </div>
+      <div>
+        <span class="fw-bold text-primary">Agriculture</span>
+        <small class="d-block text-muted" style="font-size: 0.75rem;">Management System</small>
+      </div>
+    </a>
+
+    <!-- Bouton toggle pour mobile -->
+    <button 
+      class="navbar-toggler" 
+      type="button" 
+      (click)="toggleMenu()"
+      [attr.aria-expanded]="!isMenuCollapsed"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <!-- Menu de navigation -->
+    <div class="collapse navbar-collapse" [class.show]="!isMenuCollapsed">
+      <!-- Liens de navigation -->
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <!-- Dashboard -->
+        <li class="nav-item">
+          <a 
+            class="nav-link" 
+            routerLink="/dashboard" 
+            routerLinkActive="active fw-bold"
+            [routerLinkActiveOptions]="{exact: true}"
+          >
+            <i class="fas fa-home me-1"></i>
+            Tableau de bord
+          </a>
+        </li>
+
+        <!-- Agriculteurs -->
+        <li class="nav-item" *ngIf="isAuthenticated()">
+  <a 
+    class="nav-link" 
+    routerLink="/agriculteurs" 
+    routerLinkActive="active fw-bold"
+  >
+    <i class="fas fa-user-farmer me-1"></i>
+    Agriculteurs
+  </a>
+</li>
+
+        <!-- Équipements -->
+        <li class="nav-item" *ngIf="isAuthenticated()">
+          <a 
+            class="nav-link" 
+            routerLink="/equipements" 
+            routerLinkActive="active fw-bold"
+          >
+            <i class="fas fa-tools me-1"></i>
+            Équipements
+          </a>
+        </li>
+
+        <!-- Supervision -->
+        <li class="nav-item" *ngIf="isAuthenticated()">
+          <a 
+            class="nav-link" 
+            routerLink="/supervision" 
+            routerLinkActive="active fw-bold"
+          >
+            <i class="fas fa-chart-line me-1"></i>
+            Supervision
+          </a>
+        </li>
+        
+
+        <!-- Admin (seulement pour les administrateurs) -->
+        <li class="nav-item" *ngIf="isAdmin()">
+          <a 
+            class="nav-link" 
+            routerLink="/admin" 
+            routerLinkActive="active fw-bold"
+          >
+            <i class="fas fa-cog me-1"></i>
+            Administration
+          </a>
+        </li>
+      </ul>
+
+      <!-- Section utilisateur -->
+      <div class="d-flex align-items-center">
+        <!-- Non connecté -->
+        <div *ngIf="!isAuthenticated()" class="d-flex gap-2">
+          <a 
+            class="btn btn-outline-primary btn-sm" 
+            routerLink="/auth/login"
+          >
+            <i class="fas fa-sign-in-alt me-1"></i>
+            Connexion
+          </a>
+          <a 
+            class="btn btn-primary btn-sm" 
+            routerLink="/auth/register"
+          >
+            <i class="fas fa-user-plus me-1"></i>
+            Inscription
+          </a>
+        </div>
+
+        <!-- Connecté -->
+        <div *ngIf="isAuthenticated()" class="dropdown">
+          <button 
+            class="btn btn-outline-secondary dropdown-toggle d-flex align-items-center" 
+            type="button" 
+            id="userDropdown"
+            data-bs-toggle="dropdown" 
+            aria-expanded="false"
+          >
+            <!-- Avatar -->
+            <div class="me-2">
+              <div class="avatar-circle bg-primary text-white d-flex align-items-center justify-content-center rounded-circle"
+                   style="width: 32px; height: 32px; font-size: 14px;">
+                {{ getUserInitials() }}
+              </div>
+            </div>
+            
+            <!-- Info utilisateur -->
+            <div class="text-start">
+              <div class="fw-bold small">{{ currentUser?.username }}</div>
+              <div class="text-muted xsmall">{{ getUserRoleLabel() }}</div>
+            </div>
+          </button>
+
+          <!-- Menu déroulant utilisateur -->
+          <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="userDropdown">
+            <li>
+              <h6 class="dropdown-header">
+                <i class="fas fa-user me-2"></i>
+                {{ currentUser?.username }}
+              </h6>
+            </li>
+            <li><hr class="dropdown-divider"></li>
+            
+            <li>
+              <a class="dropdown-item" routerLink="/profile">
+                <i class="fas fa-user-cog me-2"></i>
+                Mon profil
+              </a>
+            </li>
+            
+            <li>
+              <a class="dropdown-item" routerLink="/settings">
+                <i class="fas fa-cog me-2"></i>
+                Paramètres
+              </a>
+            </li>
+            
+            <li><hr class="dropdown-divider"></li>
+            
+            <li>
+              <a class="dropdown-item text-danger" (click)="logout()" style="cursor: pointer;">
+                <i class="fas fa-sign-out-alt me-2"></i>
+                Déconnexion
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>

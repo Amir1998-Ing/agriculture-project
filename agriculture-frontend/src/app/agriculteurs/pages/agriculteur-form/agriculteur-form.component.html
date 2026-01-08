@@ -1,0 +1,41 @@
+<div class="container py-4">
+  <div class="card">
+    <div class="card-body">
+      <h3 *ngIf="!isEdit">Créer un agriculteur</h3>
+      <h3 *ngIf="isEdit">Modifier l'agriculteur</h3>
+
+      <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
+
+      <form (ngSubmit)="submit()">
+        <div class="mb-3">
+          <label class="form-label">Nom</label>
+          <input class="form-control" name="nom" [(ngModel)]="agriculteur.nom" required />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Email</label>
+          <input class="form-control" type="email" name="email" [(ngModel)]="agriculteur.email" required />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Téléphone</label>
+          <input class="form-control" name="telephone" [(ngModel)]="agriculteur.telephone" />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Rôle</label>
+          <select class="form-select" name="role" [(ngModel)]="agriculteur.role">
+            <option value="AGRICULTEUR">Agriculteur</option>
+            <option value="SUPERVISEUR">Superviseur</option>
+            <option value="ADMIN">Administrateur</option>
+          </select>
+        </div>
+
+        <div class="d-flex gap-2">
+          <button class="btn btn-primary" type="submit">{{ isEdit ? 'Enregistrer' : 'Créer' }}</button>
+          <a class="btn btn-secondary" [routerLink]="['/agriculteurs/list']">Annuler</a>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
